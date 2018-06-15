@@ -282,8 +282,28 @@ class SiteUtil {
         $lastYear = \Yii::$app->params['baseYear'];
 
         for($i = $startYear; $i >= $lastYear; $i--){
-            array_push($statusArray, $i);
+            $statusArray[$i] = $i ;
         }
         return $statusArray;
+    }
+    public static function getTypeName($status,$val)
+    {
+       if($status == self::FILE_TYPE_YES){
+            if($val == self::FILE_TYPE_YES){
+                $name = 'Yes';
+            }else{
+                $name = 'No';
+            }
+       }else{
+           if($val == self::FILE_TYPE_GOOD){
+                $name = 'Good';
+            }elseif($val == self::FILE_TYPE_AV){
+                $name = 'Average';
+            }else{
+                $name = 'Poor';
+            }
+       }
+
+        return $name;
     }
 }

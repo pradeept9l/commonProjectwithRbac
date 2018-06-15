@@ -3,16 +3,16 @@
 use yii\db\Migration;
 
 /**
- * Handles the creation of table `tbl_vehical_weightage`.
+ * Handles the creation of table `tbl_attribute_value`.
  */
-class m180530_055446_create_tbl_vehical_weightage_table extends Migration
+class m180530_055446_create_tbl_attribute_value_table extends Migration
 {
     /**
      * {@inheritdoc}
      */
     public function safeUp()
     {
-        $this->createTable('tbl_vehical_weightage', [
+        $this->createTable('tbl_attribute_value', [
             'id' => $this->primaryKey(),
             'v_id' => $this->integer()->notNull(),
             'cat_id' => $this->integer()->notNull(),
@@ -25,59 +25,59 @@ class m180530_055446_create_tbl_vehical_weightage_table extends Migration
             'ifissue' => $this->string(500)->null(),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
-            'status' => $this->integer()->notNull(),
+            'status' => $this->tinyInteger()->defaultValue(1),
         ]);
         $this->createIndex(
-            'idx-tbl_vehical_weightage-v_id',
-            'tbl_vehical_weightage',
+            'idx-tbl_attribute_value-v_id',
+            'tbl_attribute_value',
             'v_id'
         );
         // add foreign key for table `country_id`
         $this->addForeignKey(
-            'fk-tbl_vehical_weightage-v_id',
-            'tbl_vehical_weightage',
+            'fk-tbl_attribute_value-v_id',
+            'tbl_attribute_value',
             'v_id',
             'tbl_vehical',
             'id',
             'CASCADE'
         );
         $this->createIndex(
-            'idx-tbl_vehical_weightage-cat_id',
-            'tbl_vehical_weightage',
+            'idx-tbl_attribute_value-cat_id',
+            'tbl_attribute_value',
             'cat_id'
         );
         // add foreign key for table `country_id`
         $this->addForeignKey(
-            'fk-tbl_vehical_weightage-cat_id',
-            'tbl_vehical_weightage',
+            'fk-tbl_attribute_value-cat_id',
+            'tbl_attribute_value',
             'cat_id',
             'tbl_category',
             'id',
             'CASCADE'
         );
         $this->createIndex(
-            'idx-tbl_vehical_weightage-subcat_id',
-            'tbl_vehical_weightage',
+            'idx-tbl_attribute_value-subcat_id',
+            'tbl_attribute_value',
             'subcat_id'
         );
         // add foreign key for table `country_id`
         $this->addForeignKey(
-            'fk-tbl_vehical_weightage-subcat_id',
-            'tbl_vehical_weightage',
+            'fk-tbl_attribute_value-subcat_id',
+            'tbl_attribute_value',
             'subcat_id',
             'tbl_subcategory',
             'id',
             'CASCADE'
         );
         $this->createIndex(
-            'idx-tbl_vehical_weightage-attribute_id',
-            'tbl_vehical_weightage',
+            'idx-tbl_attribute_value-attribute_id',
+            'tbl_attribute_value',
             'attribute_id'
         );
         // add foreign key for table `country_id`
         $this->addForeignKey(
-            'fk-tbl_vehical_weightage-attribute_id',
-            'tbl_vehical_weightage',
+            'fk-tbl_attribute_value-attribute_id',
+            'tbl_attribute_value',
             'attribute_id',
             'tbl_subcat_attribute',
             'id',
@@ -90,6 +90,6 @@ class m180530_055446_create_tbl_vehical_weightage_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('tbl_vehical_weightage');
+        $this->dropTable('tbl_attribute_value');
     }
 }

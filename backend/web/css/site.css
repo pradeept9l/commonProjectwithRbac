@@ -124,3 +124,77 @@ a.desc:after {
 .sub-section {border: 2px solid #ccc;padding: 0px 0px 0px 0px;margin: 14px;border: 1px solid #ccc;border-radius: 5px;}
 .sub-section h2 {margin: 0px 0px 18px 0px; font-size: 15px;border-bottom: 1px solid #ccc;background: #efefef80;padding: 6px 10px;font-weight: 600;}
 .innersection { padding: 0 32px 0 0;}
+.field-details { border: 1px solid gray; border-radius: 28px; padding: 16px;margin-bottom: 15px;}
+.seperate-fields {padding: 0px 15px 0px 15px;}
+.first { margin-top: 20px;}
+.second {border-left: 1px solid #ccc;}
+.profile-user-img {width: auto !important;}
+.category-new {
+    background: #e5e5e5;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 0;
+}
+.category-new .box-header.with-border {
+    border-bottom: none;
+}
+.category-new .box-header > .box-tools{top: 10px;}
+.category-new .box-header.with-border .box-title {
+    font-size: 14px;
+}
+.qstn-ans{border-top:1px solid #ddd;padding: 10px;background: #fff;border-radius: 0 0 3px 3px;}
+
+.edit {
+
+    font-size: 10px;
+    letter-spacing: 0.6px;
+    background: #4ca337;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 3px;
+    vertical-align: middle;
+    text-align: center;
+
+}
+.edit:hover,.edit:focus,.edit:active{color: #fff;text-decoration: none;}
+.category-new .qstn-ans h2 {
+
+    font-size: 14px;
+    color: #000;
+    font-weight: 500;
+    margin: 0;
+
+}
+.category-new .qstn-ans label{font-size: 12px;color: #000;font-weight: 400;}
+.category-new .qstn-ans label span{padding:0 5px}
+.multi-img img {
+
+    width: 100px;
+    height: auto;
+
+}
+.subcat{margin-bottom: 10px;}
+.valuebox {border: 2px solid #eee; padding: 10px; margin: 18px 0px 0px 0px; border-radius: 11px;}
+.multi-img {
+
+    position: relative;
+
+}
+.deletebtn {
+
+    position: absolute;
+    right: -24px;
+    color: #fff;
+    font-size: 27px;
+    font-weight: lighter;
+    width: 30px;
+    text-align: center;
+    height: 30px;
+    line-height: 30px;
+    cursor: pointer;
+    border-radius: 16px;
+    background: #333;
+    padding-top: 7px;
+    top: -32px;
+
+}
