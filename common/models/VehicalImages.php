@@ -76,6 +76,13 @@ class VehicalImages extends \yii\db\ActiveRecord
         ];
     }
     public static function setImageAttribute($name, $value,$ext) {  
+        $allreadyexit = VehicalImages::find()->where(['vehical_id' => $value['v_id'],'attr_id' => $value['attribute_id']])->andWhere(['status' => self::STATUS_ACTIVE])->all();
+        if($allreadyexit){
+            foreach($allreadyexit as $img){
+                $img->status = 0;
+                $img->save(false);
+            }
+        }
         $model = new VehicalImages();
         $model->imagename = $name;
         $model->type = 1;
