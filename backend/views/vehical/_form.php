@@ -10,6 +10,7 @@ use common\models\Branddetails;
 use yii\helpers\ArrayHelper;
 use common\models\Color;
 use common\lib\SiteUtil;
+use kartik\file\FileInput;
 
 
 /* @var $this yii\web\View */
@@ -57,7 +58,7 @@ use common\lib\SiteUtil;
     </div>
     <div class="row">
         <div class="col-md-4">
-            <?php
+            <?php  
                 $dataList = ArrayHelper::map(Color::find()
                         ->where(['status' => 1])
                         ->asArray()->orderBy(['id' => SORT_ASC])->all(), 'id', 'name');
@@ -74,40 +75,18 @@ use common\lib\SiteUtil;
         <div class="col-md-4">
             <?= $form->field($model, 'year')->dropDownList(SiteUtil::getYearList()) ?>
         </div>
+        <div class="col-md-12">
+            <?=  $form->field($image, 'pfiles')->widget(FileInput::classname(), [
+    'options' => ['accept' => 'image/*','multiple' => false],])->label('Vehical Image');             ?> 
+            
+        </div>
+         <div class="form-group col-md-12">
+            <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        </div>
     </div>
     </section>
      <?php ActiveForm::end(); ?>
-    <?php
-            $category = Category::find()->where(['status' => 1])->all();
-            foreach($category as $cat){
-                $subcat = Subcategory::find()->where(['status' => 1])->andWhere(['cat_id' => $cat->id])->all();
-        ?>
-     <?php $form = ActiveForm::begin(); ?>
-    <section class="vehicalcategory">        
-        <h2 class="catName"><?= $cat->name; ?></h2>
-        <div class="row innersection">
-            <div class="col-md-12">
-                <?php foreach($subcat as $_subcat){ 
-                    $attribute = SubcatAttribute::find()->where(['status' => 1])->andWhere(['subcat_id' => $_subcat->id])->all();
-                    ?>
-                <div class=" col-md-12 sub-section">
-                    <h2><?= $_subcat->name; ?></h2>
-                    <?php foreach($attribute as $att){ 
-                        $name = $att->name; ?>
-                    <div class="col-md-6">
-                        <?= $form->field($model, 'status')->textInput()->label($name) ?>
-                    </div>
-                <?php } ?>
-                </div>
-                <?php } ?>
-            </div>            
-        </div>
-         <div class="form-group">
-            <?= Html::submitButton('Next', ['class' => 'btn btn-success']) ?>
-        </div>
-    </section>
-    <?php ActiveForm::end(); ?>
-     <?php } ?>
+    
         
 
    

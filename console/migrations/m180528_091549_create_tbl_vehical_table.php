@@ -14,7 +14,8 @@ class m180528_091549_create_tbl_vehical_table extends Migration
     {
         $this->createTable('tbl_vehical', [
             'id' => $this->primaryKey(),
-            'name' => $this->string(500)->notNull(),
+            'name' => $this->text()->null(),
+            'avatar_image' => $this->text()->null(),
             'brand_id' => $this->integer()->notNull(),
             'model_id' => $this->integer()->notNull(),
             'trim_id' => $this->integer()->null(),

@@ -9,12 +9,15 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use common\models\Branddetails;
-use common\models\VehicalWeightage;
+use common\models\AttributeValue;
+use yii\web\UploadedFile;
+use common\models\SubcatAttribute;
+use common\models\VehicalImages;
 
 /**
  * VehicalController implements the CRUD actions for Vehical model.
  */
-class VehicalController extends Controller
+class VehicalController extends BackendController
 {
     /**
      * {@inheritdoc}
@@ -54,8 +57,10 @@ class VehicalController extends Controller
      */
     public function actionView($id)
     {
+        $category = \common\models\Category::find()->where(['status' => self::STATUS_ACTIVE])->all();
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'category'=>    $category,
         ]);
     }
 
@@ -67,15 +72,45 @@ class VehicalController extends Controller
     public function actionCreate()
     {
         $model = new Vehical();
-        $subcatattr = new \common\models\SubcatAttribute();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $model1 = new \backend\models\Uploadfile();
+        if ($model->load(Yii::$app->request->post())) {
+            $model->status = self::STATUS_NOT_ACTIVE;
+             if(isset($_FILES['Uploadfile']['name']['pfiles']) && $_FILES['Uploadfile']['name']['pfiles'] != null && $_FILES['Uploadfile']['name']['pfiles'] != ''){ 
+                $proimage = UploadedFile::getInstances($model1, 'pfiles');
+                if(!empty($proimage)){ //echo '<pre>'; print_r($_FILES); die;
+                    foreach($proimage as $file){
+                    $explode = explode('.', $file->name);
+                    $filename = $explode[0];
+                    $ext =  $explode[1];
+                    $string = str_replace(' & ', '-', $filename);
+                    $string = str_replace('  -  ', '-', $string);
+                    $string = str_replace('+', '-', $string);
+                    $string = str_replace('  - ', '-', $string);
+                    $string = str_replace(' ', '-', $string);
+                    $string = str_replace('---', '-', $string);
+                    $string = str_replace('--', '-', $string);
+                    $str= strtolower($string);
+                    $name = $str ."-".time().'.'.$ext;
+                    $rootPath = str_replace(DIRECTORY_SEPARATOR . 'backend', "", Yii::$app->basePath);
+                    $filepath = $rootPath . '/backend/web/images/';
+                    move_uploaded_file($file->tempName,$filepath.$name);
+//                    $proimage->saveAs($filepath . $name);
+                    $model->avatar_image = $name;
+                    }
+                }
+            }
+            if($model->save()){
+                $attribute = new AttributeValue();
+                $attribute->saveValue($model->id);
+                return $this->redirect(['view', 'id' => $model->id]);
+            }else{
+                echo '<pre>'; print_r($model->errors); die;
+            }
         }
 
         return $this->render('create', [
             'model' => $model,
-            'attr'  => $subcatattr,
+            'image' => $model1
         ]);
     }
 
@@ -89,13 +124,43 @@ class VehicalController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $model1 = new \backend\models\Uploadfile();
+        $oldimage = $model->avatar_image;
+        if ($model->load(Yii::$app->request->post())) { 
+            if(isset($_FILES['Uploadfile']['name']['pfiles']) && $_FILES['Uploadfile']['name']['pfiles'] != null && $_FILES['Uploadfile']['name']['pfiles'] != ''){ 
+//                echo '<pre>'; print_r($_FILES); die;
+                $proimage = UploadedFile::getInstances($model1, 'pfiles');
+                if(!empty($proimage)){ 
+                    foreach($proimage as $file){
+                    $explode = explode('.', $file->name);
+                    $filename = $explode[0];
+                    $ext =  $explode[1];
+                    $string = str_replace(' & ', '-', $filename);
+                    $string = str_replace('  -  ', '-', $string);
+                    $string = str_replace('+', '-', $string);
+                    $string = str_replace('  - ', '-', $string);
+                    $string = str_replace(' ', '-', $string);
+                    $string = str_replace('---', '-', $string);
+                    $string = str_replace('--', '-', $string);
+                    $str= strtolower($string);
+                    $name = $str ."-".time().'.'.$ext;
+                    $rootPath = str_replace(DIRECTORY_SEPARATOR . 'backend', "", Yii::$app->basePath);
+                    $filepath = $rootPath . '/backend/web/images/';
+                    move_uploaded_file($file->tempName,$filepath.$name);
+//                    $proimage->saveAs($filepath . $name);
+                    $model->avatar_image = $name;
+                    }
+                }
+            }
+            if($model->save()){
+                return $this->redirect(['view', 'id' => $model->id]);
+            }else{
+                echo '<pre>'; print_r($model->errors); die;
+            }
         }
 
         return $this->render('update', [
-            'model' => $model,
+            'model' => $model,'image' => $model1
         ]);
     }
 
@@ -166,4 +231,142 @@ class VehicalController extends Controller
             echo $data;
         }
     }
+    /*
+     * This action call from JavaScript.  ( In Dropdown value)
+     * Get Trim list according to Model  id
+     * @param integer $id
+     */
+    public function actionOpenForm() {
+        if (Yii::$app->request->isAjax) {
+            $model = new AttributeValue();
+            $image = new \backend\models\Uploadfile();
+            $vehicalId = $_POST['vId'];
+            $catId = $_POST['catId'];
+            $subId = $_POST['subId'];
+            $vehical = Vehical::find()->where(['id'=>$vehicalId])->one();
+            $data = '';
+            $cat = \common\models\Category::find()->where(['id' => $catId])->one();
+            if($catId == 8){
+                $data .= Yii::$app->controller->renderPartial('_image_form',['model'=>$model,'vehical'=>$vehical,'catId'=>$catId,'subcat_id'=>$subId,'image'=>$image]);
+            }else{
+                $data .= Yii::$app->controller->renderPartial('_attr_form',['model'=>$model,'vehical'=>$vehical,'catId'=>$catId,'subcat_id'=>$subId,'image'=>$image]);
+            }
+            \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            return [
+                        'status' => 'success',
+                        'data' => $data,
+                   ];
+        }
+    }
+    public function actionHideForm(){
+        if (Yii::$app->request->isAjax) {
+            $model = new AttributeValue();
+            $vehicalId = $_POST['vId'];
+            $catId = $_POST['catId'];
+            $subId = $_POST['subId'];
+            $catattr = SubcatAttribute::find()->where(['status' => self::STATUS_ACTIVE,'subcat_id' => $subId])->all();
+            $data = '';
+            foreach($catattr as $attr){
+                $value = AttributeValue::find()->where(['v_id' => $vehicalId])->andWhere(['attribute_id' => $attr->id])->one();
+                $data .= Yii::$app->controller->renderPartial('_attr_view',['attr' => $attr, 'value' => $value,'vid'=>$vehicalId]);
+            }
+            \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            return [
+                        'status' => 'success',
+                        'data' => $data,
+                   ];
+        }
+    }
+
+    public function actionSaveAttribute(){ 
+        if (Yii::$app->request->isAjax && !empty($_POST['vId']) && !empty($_POST['sId'])) {
+            $params = Yii::$app->request->post();
+            foreach($params['AttributeValue'] as $i=>$_attr){
+                $model = new AttributeValue();
+                $savevalue = $model->updateValue($_attr);
+                if(isset($_attr['image'])){ 
+                    $proimage = UploadedFile::getInstancesByName('AttributeValue['.$i.'][image]');
+                    if(!empty($proimage)){ 
+                        foreach($proimage as $file){
+                        $explode = explode('.', $file->name);
+                        $filename = $explode[0];
+                        $ext =  $explode[1];
+                        $str= strtolower($filename);
+                        $name = $str ."-".time().'.'.$ext;
+                        $rootPath = str_replace(DIRECTORY_SEPARATOR . 'backend', "", Yii::$app->basePath);
+                        $filepath = $rootPath . '/backend/web/documents/';
+                        move_uploaded_file($file->tempName,$filepath.$name);
+                        $documents = new VehicalImages();
+                        $documents->setImageAttribute($name, $_attr, $ext);
+                        }
+                    }
+                    
+                }
+            }
+            $catattr = SubcatAttribute::find()->where(['status' => self::STATUS_ACTIVE,'subcat_id' => $_POST['sId']])->all();
+            $data = '';
+            foreach($catattr as $attr){
+                $value = AttributeValue::find()->where(['v_id' => $_POST['vId']])->andWhere(['attribute_id' => $attr->id])->one();
+                $data .= Yii::$app->controller->renderPartial('_attr_view',['attr' => $attr, 'value' => $value,'vid' => $_POST['vId']]);
+            }
+            
+            \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            return [
+                        'status' => 'success',
+                        'data' => $data,
+                   ];
+        }
+    }
+    public function actionSaveImages(){ 
+        if (Yii::$app->request->isAjax && !empty($_POST['vId']) && !empty($_POST['sId'])) {
+            $params = Yii::$app->request->post();
+            foreach($params['VehicalImages'] as $i=>$_attr){ 
+                $model = new VehicalImages();
+                $proimage = UploadedFile::getInstancesByName('VehicalImages['.$i.'][imagename]');
+                if(!empty($proimage)){ 
+                    foreach($proimage as $file){
+                        if(!empty($file->name)){
+                            $explode = explode('.', $file->name);
+                            $filename = $explode[0];
+                            $ext =  $explode[1];
+                            $str= strtolower($filename);
+                            $name = $str ."-".time().'.'.$ext;
+                            $rootPath = str_replace(DIRECTORY_SEPARATOR . 'backend', "", Yii::$app->basePath);
+                            $filepath = $rootPath . '/backend/web/documents/';
+                            move_uploaded_file($file->tempName,$filepath.$name);
+                            $documents = new VehicalImages();
+                            $documents->saveMultipleImages($name, $_attr, $ext);       
+                        }                                         
+                    }
+
+                }
+            }
+            $catattr = SubcatAttribute::find()->where(['status' => self::STATUS_ACTIVE,'subcat_id' => $_POST['sId']])->all();
+            $data = '';
+            foreach($catattr as $attr){
+                $value = AttributeValue::find()->where(['v_id' => $_POST['vId']])->andWhere(['attribute_id' => $attr->id])->one();
+                $data .= Yii::$app->controller->renderPartial('_attr_view',['attr' => $attr, 'value' => $value,'vid' => $_POST['vId']]);
+            }
+            
+            \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            return [
+                        'status' => 'success',
+                        'data' => $data,
+                   ];
+        }
+    }
+    public function actionDeleteImages(){ 
+        if (Yii::$app->request->isAjax && !empty($_POST['id'])) {
+            $params = Yii::$app->request->post();
+            $image = VehicalImages::find()->where(['id' => $_POST['id']])->one();
+            $image->status = 0;
+            $image->save(false);
+            \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            return [
+                        'status' => 'success',
+                   ];
+        }
+    }
+    
+    
 }
