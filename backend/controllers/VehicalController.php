@@ -332,7 +332,7 @@ class VehicalController extends BackendController
                             $str= strtolower($filename);
                             $name = $str ."-".time().'.'.$ext;
                             $rootPath = str_replace(DIRECTORY_SEPARATOR . 'backend', "", Yii::$app->basePath);
-                            $filepath = $rootPath . '/backend/web/documents/';
+                            $filepath = $rootPath . '/backend/web/images/';
                             move_uploaded_file($file->tempName,$filepath.$name);
                             $documents = new VehicalImages();
                             $documents->saveMultipleImages($name, $_attr, $ext);       

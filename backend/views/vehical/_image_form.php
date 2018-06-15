@@ -45,7 +45,7 @@ $catattribute = SubcatAttribute::find()->where(['subcat_id' => $subcat_id])->all
                         foreach($image as $_image){ ?>
                         <span class="multi-img" id="img-<?= $_image->id; ?>"> 
                             <a href="javascript:void(0);" class="deletebtn" onclick="DeleteImage(<?= $_image->id; ?>)">*</a>
-                            <img src="http://pumpum.loc/documents/<?= $_image->imagename ?>" />
+                            <img src="<?= Yii::$app->params['backendUrl'].'images/'.$_image->imagename ?>" />
                         </span>
                     <?php  }
                     }

@@ -23,11 +23,17 @@ use common\lib\SiteUtil;
             echo "<label>".(!empty($value->comments))?$value->comments:'NA' ."</label>";
         }else{
             $image = \common\models\VehicalImages::find()->where(['status' => 1])->andWhere(['vehical_id' => $vid,'attr_id'=>$attr->id])->all();
-            if($image){ ?>
+            if($image){ 
+                ?>
         <div><?php 
-                foreach($image as $_image){
+                foreach($image as $_image){ 
+                if($_image->type == 1){
+                    $folder = 'documents';
+                }else{
+                    $folder = 'images';
+                }
             ?>
-            <span class="multi-img"><img src="http://pumpum.loc/documents/<?= $_image->imagename ?>" /></span>
+            <span class="multi-img"><img src="<?= Yii::$app->params['backendUrl'].$folder.'/'.$_image->imagename ?>" /></span>
                 <?php } ?>
         </div>
                 <?php  } } } ?>
