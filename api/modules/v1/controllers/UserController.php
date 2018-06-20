@@ -1,8 +1,9 @@
-<?php
-namespace apies\controllers\UserController;
+<?php 
+namespace api\modules\v1\controllers;
 use yii\rest\ActiveController;
 use common\models\User;
-
+use common\models\UserAuth;
+use api\modules\v1\models\LoginForm;
 
 class UserController extends \yii\rest\ActiveController
 {
@@ -27,7 +28,7 @@ class UserController extends \yii\rest\ActiveController
         ];
     }
     
-    public function actionLogin() { 
+    public function actionLogin() {  
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON; // Send response in json
         $model = new LoginForm();
         $model->attributes = \Yii::$app->request->post();
@@ -49,7 +50,7 @@ class UserController extends \yii\rest\ActiveController
         if (!empty($params['useremail'])) { 
             $email = $params['useremail'];
             if (($user = User::find()->where(['email' => $email])->one()) !== null) { 
-                $this->ForgotPasswordMail($user);
+//                $this->ForgotPasswordMail($user); 
             }else{ 
                 return array(400,'status' => FALSE,'message' => 'This email address is not registered with us');
             }
