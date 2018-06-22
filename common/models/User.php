@@ -33,10 +33,10 @@ class User extends UserIdentity
     {
         return [
             [['username', 'email'], 'filter', 'filter' => 'trim'],
-            [['username', 'email', 'status'], 'required'],
+            [['username', 'email', 'fname', 'status'], 'required'],
             ['email', 'email'],
             ['username', 'string', 'min' => 2, 'max' => 255],
-
+            [['fname','lname'],'safe'],
             // password field is required on 'create' scenario
             ['password', 'required', 'on' => 'create'],
                       
