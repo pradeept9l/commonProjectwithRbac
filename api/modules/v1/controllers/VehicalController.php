@@ -1,5 +1,5 @@
 <?php
-namespace api\controllers\UserController;
+namespace api\modules\v1\controllers;
 use yii\rest\ActiveController;
 use common\models\User;
 use common\models\Vehical;
@@ -49,13 +49,13 @@ class VehicalController extends \yii\rest\ActiveController
            'verbs' => [
                'class' => \yii\filters\VerbFilter::className(),
                'actions' => [
-                   'login' => ['POST'],
+                   'list' => ['POST'],
                ],
            ],
        ];
    }
    public function actionList(){
-        echo "<pre>";print_r(Yii::$app->user->identity->id);die;
+        echo "<pre>";print_r( \Yii::$app->user->identity->fname);die;
         $params = \Yii::$app->getRequest()->getBodyParams();
    }
    

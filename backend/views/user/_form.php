@@ -12,7 +12,9 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(['id' => 'form-user']); ?>
 
-        <?= $form->field($user, 'username') ?>
+        <?= $form->field($user, 'username'); ?>
+    <?= $form->field($user, 'fname')->label('First Name') ?>
+    <?= $form->field($user, 'lname')->label('Last Name') ?>
         
         <?= $form->field($user, 'email') ?>
 
