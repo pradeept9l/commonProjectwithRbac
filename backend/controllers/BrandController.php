@@ -129,7 +129,9 @@ class BrandController extends BackendController
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+            $model->status = 2;
+            $model->update();
 
         return $this->redirect(['index']);
     }
