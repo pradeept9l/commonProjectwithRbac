@@ -18,13 +18,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
+        <?php // echo Html::a('Delete', ['delete', 'id' => $model->id], [
+//            'class' => 'btn btn-danger',
+//            'data' => [
+//                'confirm' => 'Are you sure you want to delete this item?',
+//                'method' => 'post',
+//            ],
+//        ]) ?>
     </p>
     <?php if($model){
         
@@ -55,7 +55,18 @@ $this->params['breadcrumbs'][] = $this->title;
                   <b>Fuel Type</b> <a class="pull-right"><?= ($model->fuel == 1)?'Petrol':'Diesel'; ?></a>
                 </li>
               </ul>
-
+              <div class="btn-group" style="width:100%;" >
+                  <button style="width:80%;" type="button" class="btn btn-success"><?= ($model->status == 1)?'Active':'Inactive'; ?></button>
+                  <button style="width:20%;" type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                    <span class="caret"></span>
+                    <span class="sr-only">Toggle Dropdown</span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="<?= Yii::$app->params['backendUrl']?>vehical/vehical-active?id=<?= $model->id?>">Active</a></li>
+                    <li class="divider"></li>
+                    <li><a href="<?= Yii::$app->params['backendUrl']?>vehical/vehical-active?id=<?= $model->id?>">Inactive</a></li>
+                  </ul>
+                </div>
               <!--<a href="javascript:void(0);" class="btn btn-primary btn-block"><b></b></a>-->
             </div>
             <!-- /.box-body -->

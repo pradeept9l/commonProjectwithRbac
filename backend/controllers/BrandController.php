@@ -72,10 +72,20 @@ class BrandController extends BackendController
         if ($model->load(Yii::$app->request->post())) {
             $model->parent_id = self::IS_PARENT;
             $model->url_safe = SiteUtil::getUrlFormate($_POST['Branddetails']['name']);
-            if($model->save()){
-            return $this->redirect(['view', 'id' => $model->id]);
-            }else{
-                echo '<pre>'; print_r($model->errors); die;
+            $authimage = \yii\web\UploadedFile::getInstance($model, 'img_url');
+            if (!empty($authimage)) {
+                $rootPath = str_replace(DIRECTORY_SEPARATOR . 'backend', "", Yii::$app->basePath);
+                $filepath = $rootPath . '/backend/web/images/';
+                $exp_var = explode('.', $authimage->name);
+                $ext = end($exp_var);
+                $randomstring = time() ."-". $model->url_safe."." . $ext;
+                $model->img_url = $randomstring;
+                $authimage->saveAs($filepath . $randomstring);
+            }
+            if ($model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                echo '<pre>';print_r($model->errors);die;
             }
         }
 
@@ -119,7 +129,9 @@ class BrandController extends BackendController
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+            $model->status = 2;
+            $model->update();
 
         return $this->redirect(['index']);
     }

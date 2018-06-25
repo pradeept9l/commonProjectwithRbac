@@ -28,12 +28,35 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
+          //  'id',
             'name',
             'parent_id',
-            'created_at',
-            'updated_at',
-            'status',
+                [
+                'attribute' => 'created_at',
+                'format' => ['date', 'php:d-M-Y'],
+              
+            ],
+              [
+                'attribute' => 'updated_at',
+                'format' => ['date', 'php:d-M-Y'],
+              
+            ],
+               [
+            'attribute' =>'status',    
+            'label' => 'Status',
+            'value' => function($model) {
+                    return $model->status==1?'Active':'Inactive';
+                  },
+           ],
+                           [
+               'attribute'=>'img_url',
+               'label'=>'Image',
+               'format'=>'raw',
+                'value' => function ($data) { 
+                        $url = \Yii::$app->params['backendUrl'].'images/'.$data->img_url;
+                       return Html::img($url, ['alt'=>'myImage','width'=>'100','height'=>'70']);
+                }
+                ],
         ],
     ]) ?>
 

@@ -171,9 +171,22 @@ class VehicalController extends BackendController
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
+        public function actionVehicalActive($id)
+    {
+        date_default_timezone_set('Asia/Kolkata');
+        $model = $this->findModel($id);
+        $model->status = $model->status == 1 ? 0 : 1;
+        $model->save();
+      // if($model->save()) {echo '<pre>'; print_r($model); die;}else{ echo '<pre>'; print_r($model->errors); die;} 
+          return $this->redirect(['view', 'id' => $model->id]);     
+        
+    }
+    
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+         $model = $this->findModel($id);
+            $model->status = 2;
+            $model->update();
 
         return $this->redirect(['index']);
     }
@@ -368,5 +381,5 @@ class VehicalController extends BackendController
         }
     }
     
-    
+   
 }
