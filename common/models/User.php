@@ -307,4 +307,11 @@ class User extends UserIdentity
     {
         $this->account_activation_token = null;
     }
+    public static function findIdentityByAccessToken($token, $type = null)
+   {
+       $auth = UserAuth::find()->where(['auth_key' => $token, 'status' => UserAuth::STATUS_LOGIN])->one();
+       if($auth){
+           return $auth->user;
+       }
+   }
 }

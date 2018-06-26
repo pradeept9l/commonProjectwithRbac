@@ -104,7 +104,7 @@ class BrandController extends BackendController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        $oldimg = $model->img_url;
         if ($model->load(Yii::$app->request->post())) {
             $model->parent_id = self::IS_PARENT;
             $model->url_safe = SiteUtil::getUrlFormate($_POST['Branddetails']['name']);
@@ -155,6 +155,16 @@ class BrandController extends BackendController
         $model = new Branddetails(); 
         if ($model->load(Yii::$app->request->post())) { 
             $model->url_safe = SiteUtil::getUrlFormate($_POST['Branddetails']['name']);
+            $authimage = \yii\web\UploadedFile::getInstance($model, 'img_url');
+            if (!empty($authimage)) { 
+                $rootPath = str_replace(DIRECTORY_SEPARATOR . 'backend', "", Yii::$app->basePath);
+                $filepath = $rootPath . '/backend/web/images/';
+                $exp_var = explode('.', $authimage->name);
+                $ext = end($exp_var);
+                $randomstring = time() ."-". $model->url_safe."." . $ext;
+                $model->img_url = $randomstring;
+                $authimage->saveAs($filepath . $randomstring);
+            }
             if($model->save()){
                 if(isset($_GET['ch']) && $_GET['ch']){
                     Yii::$app->session->setFlash('success','Sub Category Child added successfully.');
@@ -176,8 +186,21 @@ class BrandController extends BackendController
     }
     public function actionUpdateSubcat($id){
         $model = $this->findModel($id);
+        $oldimg = $model->img_url;
         if ($model->load(Yii::$app->request->post())) {
             $model->url_safe = SiteUtil::getUrlFormate($_POST['Branddetails']['name']);
+            $authimage = \yii\web\UploadedFile::getInstance($model, 'img_url');
+            if (!empty($authimage)) { 
+                $rootPath = str_replace(DIRECTORY_SEPARATOR . 'backend', "", Yii::$app->basePath);
+                $filepath = $rootPath . '/backend/web/images/';
+                $exp_var = explode('.', $authimage->name);
+                $ext = end($exp_var);
+                $randomstring = time() ."-". $model->url_safe."." . $ext;
+                $model->img_url = $randomstring;
+                $authimage->saveAs($filepath . $randomstring);
+            }else{
+                $model->img_url = $oldimg;
+            }
             if($model->save()){
                 if(isset($_GET['ch']) && $_GET['ch']){
                     Yii::$app->session->setFlash('success','Sub Category Child added successfully.');

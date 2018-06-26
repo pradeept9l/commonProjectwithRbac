@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use common\models\Branddetails;
+use kartik\file\FileInput;
 
 $cat = Branddetails::find()->where(['id'=>$id])->one();
 
@@ -26,6 +27,10 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>  
     <?= $form->field($model, 'name')->textInput(['maxlength' => true,'placeholder'=>'Enter Model name'])->label('Model name'); ?>
     <?= $form->field($model, 'status')->dropDownList($model->statusList) ?>
+    <div class="col-md-12">
+            <?= $form->field($model, 'img_url')->widget(FileInput::classname(), [
+            'options' => ['accept' => 'image/*','multiple' => false],])->label('Image'); ?> 
+    </div>
     <?= $form->field($model, 'parent_id')->hiddenInput(['value'=>$id])->label(false); ?>
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

@@ -20,7 +20,11 @@ body {
     border-top: 1px solid #ddd;
     padding-top: 20px;
 }
-
+.box-header .slider {
+    margin: 0 10px;
+}
+.ratingsli-right{float:right;margin-right:50px;}
+.box-header .slider.slider-horizontal {width: 150px;}
 .jumbotron {
     text-align: center;
     background-color: transparent;

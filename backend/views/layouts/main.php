@@ -64,3 +64,16 @@ if (Yii::$app->controller->action->id === 'login') {
     </html>
     <?php $this->endPage() ?>
 <?php } ?>
+<script>
+    $('.rangeslider').slider({
+	formatter: function(value) {
+		return 'Current value: ' + value;
+	}
+});
+
+$(document).ready(function(){
+   $('.slider-handle').mouseleave(function(){
+       
+   }); 
+});
+</script>

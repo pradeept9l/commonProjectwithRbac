@@ -234,6 +234,8 @@ class SiteUtil {
         $cstring = str_replace('  -  ', '-', $cstring);
         $cstring = str_replace('  - ', '-', $cstring);
         $cstring = str_replace('---', '-', $cstring);
+        $cstring = str_replace('(', '', $cstring);
+        $cstring = str_replace(')', '', $cstring);
         $cstring = str_replace('--', '-', $cstring);
         $cstring = str_replace(' ', '-', $cstring);
         $cstr= strtolower($cstring);

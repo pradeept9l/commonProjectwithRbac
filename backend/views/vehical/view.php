@@ -74,13 +74,14 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <!-- /.col -->
         <div class="col-md-9">
+            
             <?php foreach($category as $key => $cat){ 
                 $subcat = Subcategory::find()->where(['status' => 1,'cat_id' => $cat->id])->all();
                 ?>
                 <div class="box box-primary <?= ($key == 0)?'':'collapsed-box'; ?>">
                     <div class="box-header with-border">
                         <h3 class="box-title"><?= $cat->name; ?></h3>
-
+                        <span>Rating: <b>0%</b><input class="rangeslider-<?= $cat->id; ?>" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="25" data-slider-step="1" data-slider-value="1"/><b>25%</b></span>
                         <div class="box-tools pull-right">
                             <button type="button" class="btn btn-box-tool"  data-widget="collapse">
                                 <i class="<?= ($key == 0)?'fa fa-minus':'fa fa-plus'; ?>"></i>
