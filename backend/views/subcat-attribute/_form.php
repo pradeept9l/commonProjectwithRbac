@@ -23,7 +23,7 @@ $cat = Subcategory::find()->where(['id'=>$id])->one();
     </div>  
     
     <?= $form->field($model, 'name')->textInput(['maxlength' => true])->label('Sub Category Attribute') ?>
-    <?= $form->field($model, 'type')->radioList(['1' => 'Yes / No', '2' => 'Text Field', '3' => 'Good / Average / Poor', '4' => 'File',])  ?>
+    <?= $form->field($model, 'type')->radioList(['1' => 'Yes / No', '2' => 'Text Field', '3' => 'Good / Average / Poor', '4' => 'File','5' => 'OK / NOT OK / NA'])  ?>
 <!--$form->field($model, 'vegan')->checkBox(['label' => 'Vegan', 'uncheck' => 0, 'checked' => 1]);-->
     <?= $form->field($model, 'subcat_id')->hiddenInput(['value'=> $id])->label(FALSE) ?>
 

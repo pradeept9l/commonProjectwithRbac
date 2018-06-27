@@ -41,7 +41,7 @@ $catattribute = SubcatAttribute::find()->where(['subcat_id' => $subcat_id])->all
                             
             ?>
             <div class="col-md-12 valuebox">
-                <?php if($attr->type == 1 || $attr->type == 3){ ?>
+                <?php if($attr->type == 1 || $attr->type == 3 || $attr->type == 5){ ?>
                 <div class="col-md-3">
                     <?= $form->field($value, '['.$value->id.']v_id')->hiddenInput(['value' => $vehical->id])->label(''); ?>
                     <?= $form->field($value, '['.$value->id.']cat_id')->hiddenInput(['value' => $value->cat_id])->label(''); ?>

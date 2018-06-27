@@ -108,6 +108,18 @@ class BrandController extends BackendController
         if ($model->load(Yii::$app->request->post())) {
             $model->parent_id = self::IS_PARENT;
             $model->url_safe = SiteUtil::getUrlFormate($_POST['Branddetails']['name']);
+            $authimage = \yii\web\UploadedFile::getInstance($model, 'img_url');
+            if (!empty($authimage)) {
+                $rootPath = str_replace(DIRECTORY_SEPARATOR . 'backend', "", Yii::$app->basePath);
+                $filepath = $rootPath . '/backend/web/images/';
+                $exp_var = explode('.', $authimage->name);
+                $ext = end($exp_var);
+                $randomstring = time() ."-". $model->url_safe."." . $ext;
+                $model->img_url = $randomstring;
+                $authimage->saveAs($filepath . $randomstring);
+            }else{
+                $model->img_url = $oldimg;
+            }
             if($model->save()){
             return $this->redirect(['view', 'id' => $model->id]);
             }else{
@@ -173,10 +185,7 @@ class BrandController extends BackendController
                     Yii::$app->session->setFlash('success','Model added successfully.');
                     return $this->redirect(\Yii::$app->urlManager->createUrl(["brand/view-model?id=".$id]));
                 }
-            }else{
-                echo '<pre>'; print_r($model->errors); die;
-            }
-            
+            }            
         }else{
           return $this->render('sub_form',[
                'model' => $model ,
@@ -209,10 +218,7 @@ class BrandController extends BackendController
                     Yii::$app->session->setFlash('success','Model added successfully.');
                     return $this->redirect(\Yii::$app->urlManager->createUrl(["brand/view-model?id=".$model->parent_id]));
                 }
-            }else{
-                echo '<pre>'; print_r($model->errors); die;
             }
-            
         } else {
             return $this->render('sub_form', [
                 'model' => $model,
