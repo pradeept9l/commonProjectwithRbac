@@ -8,7 +8,7 @@ use common\lib\SiteUtil;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 <div class="qstn-ans" >
- <?php if($attr->type == 1 || $attr->type == 3){ ?>
+ <?php if($attr->type == 1 || $attr->type == 3 || $attr->type == 5){ ?>
         <h2><?= $attr->name ?> <span>:</span><?= SiteUtil::getTypeName($attr->type, $value->answer); ?></h2>
         <label>comment <span>:</span> <?= (!empty($value->comments))?$value->comments:'NA'; ?></label><br>
         <label>Repair/ Replace Cost<span>:</span> <?= (!empty($value->repair_Cost))?$value->repair_Cost:'NA'; ?></label><br>

@@ -36,6 +36,9 @@ if (Yii::$app->controller->action->id === 'login') {
         <?= Html::csrfMetaTags() ?>
         <title><?= Html::encode($this->title) ?></title>
         <?php $this->head() ?>
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+<link rel="stylesheet" href="fontawesome-stars.css">
+
     </head>
     <body class="hold-transition skin-blue sidebar-mini">
     <?php $this->beginBody() ?>
@@ -64,16 +67,12 @@ if (Yii::$app->controller->action->id === 'login') {
     </html>
     <?php $this->endPage() ?>
 <?php } ?>
-<script>
-    $('.rangeslider').slider({
-	formatter: function(value) {
-		return 'Current value: ' + value;
-	}
-});
-
-$(document).ready(function(){
-   $('.slider-handle').mouseleave(function(){
-       
-   }); 
-});
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src="jquery.barrating.min.js"></script>
+<script type="text/javascript">
+   $(function() {
+      $('#example').barrating({
+        theme: 'fontawesome-stars'
+      });
+   });
 </script>
