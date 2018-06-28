@@ -44,7 +44,7 @@ class Vehical extends \yii\db\ActiveRecord
         return [
             [['brand_id', 'model_id', 'status'], 'required'],
             [['brand_id', 'model_id', 'trim_id', 'color_id', 'fuel', 'year', 'no_of_owner', 'created_at', 'updated_at', 'status'], 'integer'],
-            [['steps','avatar_image','name'],'safe'],
+            [['steps','avatar_image','name','price','mileage','transmission','body_type'],'safe'],
             [['avatar_image'], 'file'],
             [['brand_id'], 'exist', 'skipOnError' => true, 'targetClass' => Branddetails::className(), 'targetAttribute' => ['brand_id' => 'id']],
         ];

@@ -211,7 +211,7 @@ class VehicalController extends BackendController
      * Get Model list according to brand id
      * @param integer $id
      */
-    public function actionGetmodel() {
+    public function actionGetmodel() { 
         $option = "<option value=''>Select Model</option>";
         if (isset($_POST['id']) && !empty($_POST['id'])) {
             $id = $_POST['id'];
