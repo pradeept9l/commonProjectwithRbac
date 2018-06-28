@@ -75,7 +75,10 @@ use kartik\file\FileInput;
         <div class="col-md-4">
             <?= $form->field($model, 'year')->dropDownList(SiteUtil::getYearList()) ?>
         </div>
-        <div class="col-md-12">
+        <div class="col-md-6">
+            <?= $form->field($model, 'price')->textInput()->label('Price'); ?>
+        </div>
+        <div class="col-md-6">
             <?=  $form->field($image, 'pfiles')->widget(FileInput::classname(), [
     'options' => ['accept' => 'image/*','multiple' => false],])->label('Vehical Image');             ?> 
             
